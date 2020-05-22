@@ -1,6 +1,5 @@
 package com.example.demo.DAO;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,9 +13,17 @@ public interface EmployeeDao extends MongoRepository<Employee, Long> {
 	 
     List<Employee> findByFullNameLike(String fullName);
  
-    List<Employee> findByHireDateGreaterThan(Date hireDate);
+    List<Employee> findBySalaryGreaterThan(Double salary);
+    
+    List<Employee> findByAddressZipCode(long zipCode);
  
     // Supports native JSON query string
-    @Query("{fullName:'?0'}")
-    List<Employee> findCustomByFullName(String fullName);
+    @Query("{'fullName' : ?0 , 'band' : ?1}") 
+    List<Employee> findEmployeesByFullNameAndBand(String fullName, String band);
+    
+    @Query("{salary : {$lt : ?0, $gt : ?1}}")
+    List<Employee> findEmployeesBySalaryRange(Double maxSalary, Double minSalary);
+
+    @Query("{ 'fullName' : { $regex: ?0 } }") 
+    List<Employee> findEmployeesByRegex(String regexp);
 }

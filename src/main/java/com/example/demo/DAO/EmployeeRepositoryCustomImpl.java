@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.Model.Address;
 import com.example.demo.Model.Employee;
 import com.mongodb.client.result.UpdateResult;
 
@@ -31,11 +32,15 @@ public class EmployeeRepositoryCustomImpl implements EmployeeRepositoryCustom {
     }
  
     @Override
-    public long updateEmployee(String empNo, String fullName, Date hireDate) {
+    public long updateEmployee(String empNo, String fullName, String band, Double salary, 
+    		Date hireDate, Address address) {
         Query query = new Query(Criteria.where("empNo").is(empNo));
         Update update = new Update();
         update.set("fullName", fullName);
+        update.set("band", band);
+        update.set("salary", salary);
         update.set("hireDate", hireDate);
+        update.set("address", address);
  
         UpdateResult result = this.mongoTemplate.updateFirst(query, update, Employee.class);
  
